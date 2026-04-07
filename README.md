@@ -1,29 +1,57 @@
 # @myorg/bank-importer-santander
 
-Plugin de importación para extractos de Santander compatible con `@myorg/bank-statement-parser`.
+Importer plugin de Santander para usar junto con `@myorg/bank-statement-parser`.
 
 ## Instalación
 
 ```bash
-npm install @myorg/bank-importer-santander
+npm i @myorg/bank-importer-santander
 ```
 
-> Este paquete requiere `@myorg/bank-statement-parser` como `peerDependency`.
+> Requiere instalar también `@myorg/bank-statement-parser` (peer dependency).
 
-## Uso
+## Uso con el core
 
 ```ts
-import santanderImporter, { santanderImporter as namedImporter } from "@myorg/bank-importer-santander";
+import { parseWithImporter } from "@myorg/bank-statement-parser";
+import santanderImporter from "@myorg/bank-importer-santander";
+
+const result = parseWithImporter({
+  importer: santanderImporter,
+  rows: [
+    { Fecha: "07/04/2026", Concepto: "Nómina", Importe: "1500,00" },
+    { Fecha: "07/04/2026", Concepto: "Compra", Debe: "25,00" }
+  ],
+  options: { defaultCurrency: "EUR", includeRawRow: true }
+});
+
+console.log(result.transactions);
+console.log(result.warnings);
 ```
 
-El importer exporta la estructura `BankImporter` esperada por el core y provee:
+## Reglas implementadas Santander
 
-- `canHandle(headers)` para detectar formatos Santander comunes.
-- `parse(rows, ctx)` para mapear filas a `GenericTransaction` y warnings.
-- `getDuplicateKey(tx)` para deduplicación consistente.
+- Fecha: `Fecha`, `Fecha operacion`, `Fecha valor`.
+- Descripción: `Concepto`, `Descripcion`.
+- Importe único: `Importe`, `Importe EUR`, `Importe Eur`.
+- Debe/Haber separado:
+  - Debe: `Debe`, `Cargo`, `Retirada`, `Importe debe`.
+  - Haber: `Haber`, `Abono`, `Ingreso`, `Importe haber`.
+- Indicador textual de signo: `Tipo`, `Tipo movimiento`, `Naturaleza`, `Movimiento`, `Debe/Haber`.
 
-## Notas de diseño
+Prioridad de signo:
+1. Debe/Haber separados.
+2. Si no existen, `Importe` único.
+3. Si hay indicador textual, aplica el signo sobre el valor absoluto.
 
-- No incluye lógica de engine/core.
-- Mantiene amounts en positivo y define `direction` por contexto de movimiento.
-- Respeta `defaultCurrency` e `includeRawRow` desde `ImporterContext.options`.
+Output:
+- `amount`: siempre absoluto.
+- `direction`: `expense` si signo negativo, `income` si positivo.
+
+## Desarrollo
+
+```bash
+npm run typecheck
+npm run test
+npm run build
+```

@@ -1,2 +1,2 @@
 export { santanderImporter } from "./santanderImporter.js";
-export { santanderImporter as default } from "./santanderImporter.js";
+export { default } from "./santanderImporter.js";

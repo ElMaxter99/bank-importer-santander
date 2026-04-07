@@ -1,8 +1,8 @@
 declare module "@myorg/bank-statement-parser" {
   export type GenericTransaction = {
-    date: string;
+    date: string; // YYYY-MM-DD
     description: string;
-    amount: number;
+    amount: number; // siempre positivo
     direction: "income" | "expense";
     currency: string;
     source?: {
