@@ -1,0 +1,46 @@
+{
+  "name": "@alvaromaxter/bank-importer-santander",
+  "version": "0.1.0",
+  "description": "Santander bank statement importer plugin for @myorg/bank-statement-parser",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "@alvaromaxter/bank-statement-parser": "^1.0.0"
+  },
+  "devDependencies": {
+    "@alvaromaxter/bank-statement-parser": "^1.0.0",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.8"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "santander",
+    "bank",
+    "statement",
+    "importer",
+    "typescript",
+    "plugin"
+  ],
+  "license": "MIT"
+}
