@@ -1,6 +1,6 @@
 {
-  "name": "@alvaromaxter/bank-importer-santander",
-  "version": "0.1.0",
+  "name": "@myorg/bank-importer-santander",
+  "version": "0.2.0",
   "description": "Santander bank statement importer plugin for @myorg/bank-statement-parser",
   "type": "module",
   "main": "./dist/index.js",
@@ -20,19 +20,17 @@
     "node": ">=18"
   },
   "peerDependencies": {
-    "@alvaromaxter/bank-statement-parser": "^1.0.0"
+    "@myorg/bank-statement-parser": "^1.0.0"
   },
   "devDependencies": {
-    "@alvaromaxter/bank-statement-parser": "^1.0.0",
-    "@types/node": "^22.10.2",
+    "tsup": "^8.3.5",
     "typescript": "^5.6.3",
     "vitest": "^2.1.8"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsup",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "test": "vitest run"
   },
   "keywords": [
     "santander",
